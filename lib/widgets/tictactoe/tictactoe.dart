@@ -15,7 +15,7 @@ class _TicTacToeState extends State<TicTacToe> {
   Point xMove = Point(
     name: 'X',
     animation: RiveAnimation.asset(
-      'lib/assets/rive/circle_button.riv',
+      'lib/assets/rive/cross_button.riv',
       fit: BoxFit.contain,
     ),
   );
