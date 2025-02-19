@@ -14,17 +14,17 @@ class TicTacToe extends ConsumerStatefulWidget {
 
 class _TicTacToeState extends ConsumerState<TicTacToe> {
   Point xMove = Point(
-    name: 'X',
+    name: '×',
     animation: RiveAnimation.asset(
-      'lib/assets/rive/cross_button.riv',
+      'lib/assets/rive/cross.riv',
       fit: BoxFit.contain,
     ),
   );
 
   Point oMove = Point(
-    name: 'O',
+    name: 'o',
     animation: RiveAnimation.asset(
-      'lib/assets/rive/circle_button.riv',
+      'lib/assets/rive/circle.riv',
       fit: BoxFit.contain,
     ),
   );
@@ -38,6 +38,8 @@ class _TicTacToeState extends ConsumerState<TicTacToe> {
   bool isX = true;
   String? winner;
   bool isEnded = false;
+  final xColor = Colors.blue;
+  final oColor = Colors.pink[300];
 
   void _handleTap(int index, WidgetRef ref) {
     if (board[index] == null) {
@@ -80,12 +82,12 @@ class _TicTacToeState extends ConsumerState<TicTacToe> {
                     style: Theme.of(context)
                         .textTheme
                         .displayMedium
-                        ?.copyWith(color: Colors.blue)),
+                        ?.copyWith(color: xColor)),
                 Text("${score.xPoints} wins",
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge
-                        ?.copyWith(color: Colors.blue)),
+                        ?.copyWith(color: xColor)),
               ],
             ),
             Column(
@@ -94,12 +96,12 @@ class _TicTacToeState extends ConsumerState<TicTacToe> {
                     style: Theme.of(context)
                         .textTheme
                         .displayMedium
-                        ?.copyWith(color: Colors.red)),
+                        ?.copyWith(color: oColor)),
                 Text("${score.oPoints} wins",
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge
-                        ?.copyWith(color: Colors.red)),
+                        ?.copyWith(color: oColor)),
               ],
             ),
           ],
@@ -136,7 +138,12 @@ class _TicTacToeState extends ConsumerState<TicTacToe> {
         ),
         const SizedBox(height: 20),
         if (isEnded || winner != null)
-          Text(winner != null ? '$winner has won!' : 'It\'s a draw!'),
+          Text(winner != null ? '$winner has won!' : 'It\'s a draw!',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: winner != null
+                        ? (winner == '×' ? xColor : oColor)
+                        : null,
+                  )),
         const SizedBox(height: 20),
         if (isEnded || winner != null)
           ElevatedButton(

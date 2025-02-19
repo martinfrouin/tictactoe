@@ -16,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: Text("Tic Tac Toe"),
         ),
+        backgroundColor: Colors.grey[900],
         body: Center(child: TicTacToe()));
   }
 }
