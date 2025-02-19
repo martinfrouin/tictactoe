@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rive/rive.dart';
 import 'package:tictactoe/helpers/game.dart';
+import 'package:tictactoe/l10n/l10n.dart';
 import 'package:tictactoe/models/game.dart';
 import 'package:tictactoe/providers/score_provider.dart';
 
@@ -14,7 +15,7 @@ class TicTacToe extends ConsumerStatefulWidget {
 
 class _TicTacToeState extends ConsumerState<TicTacToe> {
   Point xMove = Point(
-    name: '×',
+    name: 'x',
     animation: RiveAnimation.asset(
       'lib/assets/rive/cross.riv',
       fit: BoxFit.contain,
@@ -83,7 +84,9 @@ class _TicTacToeState extends ConsumerState<TicTacToe> {
                         .textTheme
                         .displayMedium
                         ?.copyWith(color: xColor)),
-                Text("${score.xPoints} wins",
+                Text(
+                    translate(context)
+                        .ticTacToeScoreCountMessage(score.xPoints),
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge
@@ -92,12 +95,14 @@ class _TicTacToeState extends ConsumerState<TicTacToe> {
             ),
             Column(
               children: [
-                Text("o",
+                Text('o',
                     style: Theme.of(context)
                         .textTheme
                         .displayMedium
                         ?.copyWith(color: oColor)),
-                Text("${score.oPoints} wins",
+                Text(
+                    translate(context)
+                        .ticTacToeScoreCountMessage(score.oPoints),
                     style: Theme.of(context)
                         .textTheme
                         .titleLarge
@@ -141,7 +146,7 @@ class _TicTacToeState extends ConsumerState<TicTacToe> {
           Text(winner != null ? '$winner has won!' : 'It\'s a draw!',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: winner != null
-                        ? (winner == '×' ? xColor : oColor)
+                        ? (winner == 'x' ? xColor : oColor)
                         : null,
                   )),
         const SizedBox(height: 20),

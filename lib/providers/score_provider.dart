@@ -19,9 +19,9 @@ class ScoreNotifier extends ChangeNotifier {
   int drawPoints = 0;
 
   void incrementScore(String? winner) {
-    if (winner == 'X') {
+    if (winner == 'x') {
       xPoints++;
-    } else if (winner == 'O') {
+    } else if (winner == 'o') {
       oPoints++;
     } else {
       drawPoints++;

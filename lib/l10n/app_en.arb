@@ -1,0 +1,13 @@
+{
+    "@@locale": "en",
+    "ticTacToeScoreCountMessage": "{count} wins",
+    "@ticTacToeScoreCountMessage": {
+      "description": "Message to display the score of the player",
+        "type": "text",
+        "placeholders": {
+          "count": {
+            "type": "int"
+          }
+        }
+      }
+  }
