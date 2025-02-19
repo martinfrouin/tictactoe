@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rive/rive.dart';
 import 'package:tictactoe/helpers/game.dart';
 import 'package:tictactoe/models/game.dart';
-import 'package:tictactoe/widgets/tictactoe/dialogs.dart';
+import 'package:tictactoe/providers/score_provider.dart';
 
-class TicTacToe extends StatefulWidget {
+class TicTacToe extends ConsumerStatefulWidget {
   const TicTacToe({super.key});
 
   @override
-  State<TicTacToe> createState() => _TicTacToeState();
+  ConsumerState<TicTacToe> createState() => _TicTacToeState();
 }
 
-class _TicTacToeState extends State<TicTacToe> {
+class _TicTacToeState extends ConsumerState<TicTacToe> {
   Point xMove = Point(
     name: 'X',
     animation: RiveAnimation.asset(
@@ -28,103 +29,120 @@ class _TicTacToeState extends State<TicTacToe> {
     ),
   );
 
+  RiveAnimation grid = RiveAnimation.asset(
+    'lib/assets/rive/grid.riv',
+    fit: BoxFit.contain,
+  );
+
   List<Point?> board = List.filled(9, null);
   bool isX = true;
+  String? winner;
+  bool isEnded = false;
 
-  void _handleTap(int index) {
+  void _handleTap(int index, WidgetRef ref) {
     if (board[index] == null) {
       setState(() {
         board[index] = isX ? xMove : oMove;
         isX = !isX;
+        winner = checkWinner(board);
+        isEnded = checkEndGame(board);
       });
 
-      String? winner = checkWinner(board);
-      bool isEnded = checkEndGame(board);
-
       if (isEnded || winner != null) {
-        showDialog(
-          context: context,
-          builder: (context) => getEndDialog(context, winner, () {
-            Navigator.of(context).pop();
-
-            setState(() {
-              board = List.filled(9, null);
-              isX = true;
-            });
-          }),
-        );
+        ref.read(scoreProvider).incrementScore(winner);
       }
     }
   }
 
-  EdgeInsets getGridMargin(int index) {
-    double strokeWidth = 4;
-
-    if (index == 0) {
-      return EdgeInsets.only(
-          left: 0, top: 0, right: strokeWidth, bottom: strokeWidth);
-    } else if (index == 1) {
-      return EdgeInsets.only(
-          left: strokeWidth, top: 0, right: strokeWidth, bottom: strokeWidth);
-    } else if (index == 2) {
-      return EdgeInsets.only(
-          left: strokeWidth, top: 0, right: 0, bottom: strokeWidth);
-    } else if (index == 3) {
-      return EdgeInsets.only(
-          left: 0, top: strokeWidth, right: strokeWidth, bottom: strokeWidth);
-    } else if (index == 4) {
-      return EdgeInsets.only(
-          left: strokeWidth,
-          top: strokeWidth,
-          right: strokeWidth,
-          bottom: strokeWidth);
-    } else if (index == 5) {
-      return EdgeInsets.only(
-          left: strokeWidth, top: strokeWidth, right: 0, bottom: strokeWidth);
-    } else if (index == 6) {
-      return EdgeInsets.only(
-          left: 0, top: strokeWidth, right: strokeWidth, bottom: 0);
-    } else if (index == 7) {
-      return EdgeInsets.only(
-          left: strokeWidth, top: strokeWidth, right: strokeWidth, bottom: 0);
-    } else {
-      return EdgeInsets.only(
-          left: strokeWidth, top: strokeWidth, right: 0, bottom: 0);
-    }
+  void resetGame() {
+    setState(() {
+      board = List.filled(9, null);
+      isX = true;
+      winner = null;
+      isEnded = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement scoreboard
+    Score score = ref.read(scoreProvider).score;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          color: Theme.of(context).colorScheme.inversePrimary,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 20,
+          children: [
+            Column(
+              children: [
+                Text("×",
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(color: Colors.blue)),
+                Text("${score.xPoints} wins",
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(color: Colors.blue)),
+              ],
+            ),
+            Column(
+              children: [
+                Text("o",
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(color: Colors.red)),
+                Text("${score.oPoints} wins",
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(color: Colors.red)),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        SizedBox(
           height: 300,
           width: 300,
-          child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              childAspectRatio: 1,
-            ),
-            shrinkWrap: true,
-            itemCount: 9,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () => _handleTap(index),
-                child: Container(
-                  margin: getGridMargin(index),
-                  color: Theme.of(context).colorScheme.surface,
-                  child: Center(
-                    child: board[index]?.animation ?? SizedBox(),
-                  ),
+          child: Stack(
+            children: [
+              Positioned(child: grid),
+              GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 1,
                 ),
-              );
-            },
+                shrinkWrap: true,
+                itemCount: 9,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () => _handleTap(index, ref),
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      color: Colors.transparent,
+                      child: Center(
+                        child: board[index]?.animation ?? SizedBox(),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ),
+        const SizedBox(height: 20),
+        if (isEnded || winner != null)
+          Text(winner != null ? '$winner has won!' : 'It\'s a draw!'),
+        const SizedBox(height: 20),
+        if (isEnded || winner != null)
+          ElevatedButton(
+            onPressed: resetGame,
+            child: Text("Reset"),
+          ),
       ],
     );
   }
