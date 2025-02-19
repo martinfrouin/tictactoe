@@ -15,7 +15,7 @@ class TicTacToe extends ConsumerStatefulWidget {
 
 class _TicTacToeState extends ConsumerState<TicTacToe> {
   Point xMove = Point(
-    name: 'x',
+    name: '×',
     animation: RiveAnimation.asset(
       'lib/assets/rive/cross.riv',
       fit: BoxFit.contain,
@@ -43,6 +43,10 @@ class _TicTacToeState extends ConsumerState<TicTacToe> {
   final oColor = Colors.pink[300];
 
   void _handleTap(int index, WidgetRef ref) {
+    if (isEnded || winner != null) {
+      return;
+    }
+
     if (board[index] == null) {
       setState(() {
         board[index] = isX ? xMove : oMove;
@@ -73,45 +77,51 @@ class _TicTacToeState extends ConsumerState<TicTacToe> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          spacing: 20,
-          children: [
-            Column(
-              children: [
-                Text("×",
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayMedium
-                        ?.copyWith(color: xColor)),
-                Text(
-                    translate(context)
-                        .ticTacToeScoreCountMessage(score.xPoints),
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(color: xColor)),
-              ],
-            ),
-            Column(
-              children: [
-                Text('o',
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayMedium
-                        ?.copyWith(color: oColor)),
-                Text(
-                    translate(context)
-                        .ticTacToeScoreCountMessage(score.oPoints),
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(color: oColor)),
-              ],
-            ),
-          ],
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                spacing: 20,
+                children: [
+                  Column(
+                    children: [
+                      Text("×",
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium
+                              ?.copyWith(color: xColor)),
+                      Text(
+                          translate(context)
+                              .ticTacToeScoreCountMessage(score.xPoints),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge
+                              ?.copyWith(color: xColor)),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text('o',
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium
+                              ?.copyWith(color: oColor)),
+                      Text(
+                          translate(context)
+                              .ticTacToeScoreCountMessage(score.oPoints),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge
+                              ?.copyWith(color: oColor)),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-        const SizedBox(height: 20),
         SizedBox(
           height: 300,
           width: 300,
@@ -129,7 +139,7 @@ class _TicTacToeState extends ConsumerState<TicTacToe> {
                   return GestureDetector(
                     onTap: () => _handleTap(index, ref),
                     child: Container(
-                      padding: EdgeInsets.all(8),
+                      padding: EdgeInsets.all(16),
                       color: Colors.transparent,
                       child: Center(
                         child: board[index]?.animation ?? SizedBox(),
@@ -141,20 +151,29 @@ class _TicTacToeState extends ConsumerState<TicTacToe> {
             ],
           ),
         ),
-        const SizedBox(height: 20),
-        if (isEnded || winner != null)
-          Text(winner != null ? '$winner has won!' : 'It\'s a draw!',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: winner != null
-                        ? (winner == 'x' ? xColor : oColor)
-                        : null,
-                  )),
-        const SizedBox(height: 20),
-        if (isEnded || winner != null)
-          ElevatedButton(
-            onPressed: resetGame,
-            child: Text("Reset"),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (isEnded || winner != null)
+                Text(
+                    winner != null
+                        ? translate(context).ticTacToeWinnerMessage(winner!)
+                        : translate(context).ticTacToeDrawMessage,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: winner != null
+                              ? (winner == 'o' ? oColor : xColor)
+                              : Colors.white,
+                        )),
+              const SizedBox(height: 16),
+              if (isEnded || winner != null)
+                ElevatedButton(
+                  onPressed: resetGame,
+                  child: Text(translate(context).ticTacToeResetButton),
+                ),
+            ],
           ),
+        )
       ],
     );
   }

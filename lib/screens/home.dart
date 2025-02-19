@@ -17,6 +17,6 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Text("Tic Tac Toe"),
         ),
         backgroundColor: Colors.grey[900],
-        body: Center(child: TicTacToe()));
+        body: SafeArea(child: TicTacToe()));
   }
 }
