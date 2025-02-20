@@ -1,6 +1,6 @@
-[![Checks](https://github.com/martinfrouin/tictactoe/actions/workflows/checks.yml/badge.svg)](https://github.com/martinfrouin/tictactoe/actions/workflows/checks.yml)
+[![Tests](https://github.com/martinfrouin/tictactoe/actions/workflows/tests.yml/badge.svg)](https://github.com/martinfrouin/tictactoe/actions/workflows/tests.yml)
 
-[![Builds](https://github.com/martinfrouin/tictactoe/actions/workflows/builds.yml/badge.svg)](https://github.com/martinfrouin/tictactoe/actions/workflows/builds.yml)
+[![Build](https://github.com/martinfrouin/tictactoe/actions/workflows/build.yml/badge.svg)](https://github.com/martinfrouin/tictactoe/actions/workflows/build.yml)
 
 # tictactoe
 
@@ -28,4 +28,4 @@ flutter test
 ```
 
 ## Known Improvements
-- The GHA are just building Android and Web apps because of Apple's restriction for iOS and MacOS.
+- The GHA are just building the Web app because to avoid GHA free limitations.
