@@ -1,13 +1,9 @@
-name: Flutter CI
-
-# This workflow is triggered on pushes to the repository.
+name: Build CI
 
 on:
   pull_request:
     branches:
       - main
-
-# on: push    # Default will running for every branch.
 
 jobs:
   build:
@@ -34,9 +30,3 @@ jobs:
 
     # Run tests
     - run: flutter test
-
-    # Build the app for Android
-    # - run: flutter build apk
-
-    # Build the app for Web
-    - run: flutter build web
