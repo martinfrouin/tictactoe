@@ -1,3 +1,5 @@
+[![Flutter CI](https://github.com/martinfrouin/tictactoe/actions/workflows/CI.yml/badge.svg)](https://github.com/martinfrouin/tictactoe/actions/workflows/CI.yml)
+
 # tictactoe
 
 A Tic Tac Toe game made with Flutter and Rive.
