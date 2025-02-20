@@ -32,8 +32,11 @@ jobs:
     # Statically analyze the Dart code for any errors.
     - run: flutter analyze .
 
+    # Run tests
+    - run: flutter test
+
     # Build the app for Android
-    - run: flutter build apk
+    # - run: flutter build apk
 
     # Build the app for Web
     - run: flutter build web

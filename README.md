@@ -1,16 +1,27 @@
 # tictactoe
 
-A new Flutter project.
+A Tic Tac Toe game made with Flutter and Rive.
+
+## Requirements
+- Flutter 3.27.x
+- Dart 3.6.x
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Install dependencies
+```dart
+flutter pub get
+```
 
-A few resources to get you started if this is your first Flutter project:
+### Run the app
+```dart
+flutter run
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Run tests if needed
+```dart
+flutter test
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Known Improvements
+- The GHA are just building Android and Web apps because of Apple's restriction for iOS and MacOS.
