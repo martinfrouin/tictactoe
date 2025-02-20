@@ -86,9 +86,7 @@ class _TicTacToeScreenState extends ConsumerState<TicTacToeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Scoreboard(
-                  score: score,
-                ),
+                Scoreboard(score: score),
               ],
             ),
           ),
