@@ -1,4 +1,6 @@
-[![Flutter CI](https://github.com/martinfrouin/tictactoe/actions/workflows/CI.yml/badge.svg)](https://github.com/martinfrouin/tictactoe/actions/workflows/CI.yml)
+[![Checks](https://github.com/martinfrouin/tictactoe/actions/workflows/CI.yml/badge.svg)](https://github.com/martinfrouin/tictactoe/actions/workflows/checks.yml)
+
+[![Builds](https://github.com/martinfrouin/tictactoe/actions/workflows/builds.yml/badge.svg)](https://github.com/martinfrouin/tictactoe/actions/workflows/builds.yml)
 
 # tictactoe
 
