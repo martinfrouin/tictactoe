@@ -1,6 +1,11 @@
 {
   "@@locale": "en",
-  "ticTacToeScoreCountMessage": "{count, plural, =0 {0 win} other {{count} wins}}",
+  "ticTacToeTitle": "Tic Tac Toe",
+  "@ticTacToeTitle": {
+    "description": "Title of the game",
+    "type": "text"
+  },
+  "ticTacToeScoreCountMessage": "{count, plural, =0 {0 win} =1 {1 win} other {{count} wins}}",
   "@ticTacToeScoreCountMessage": {
     "description": "Message to display the score of the player",
     "type": "text",
