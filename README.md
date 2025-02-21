@@ -28,5 +28,5 @@ flutter test
 ```
 
 ## Known Improvements
-- The GHA are just building the Web app because to avoid GHA free limitations.
+- The GHA are just building the Web app to avoid GHA free limitations.
 - Add of sound effects
