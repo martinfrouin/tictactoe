@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:tictactoe/constants/game.dart';
 
 class Score {
   Score({
@@ -19,9 +20,9 @@ class ScoreNotifier extends ChangeNotifier {
   int drawPoints = 0;
 
   void incrementScore(String? winner) {
-    if (winner == '×') {
+    if (winner == xPlayer) {
       xPoints++;
-    } else if (winner == 'o') {
+    } else if (winner == oPlayer) {
       oPoints++;
     } else {
       drawPoints++;

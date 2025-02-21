@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rive/rive.dart';
+import 'package:tictactoe/constants/game.dart';
 import 'package:tictactoe/helpers/game.dart';
 import 'package:tictactoe/l10n/l10n.dart';
 import 'package:tictactoe/models/game.dart';
@@ -17,7 +18,7 @@ class TicTacToeScreen extends ConsumerStatefulWidget {
 
 class _TicTacToeScreenState extends ConsumerState<TicTacToeScreen> {
   Point xMove = Point(
-    name: '×',
+    name: xPlayer,
     animation: RiveAnimation.asset(
       'lib/assets/rive/cross.riv',
       fit: BoxFit.contain,
@@ -25,7 +26,7 @@ class _TicTacToeScreenState extends ConsumerState<TicTacToeScreen> {
   );
 
   Point oMove = Point(
-    name: 'o',
+    name: oPlayer,
     animation: RiveAnimation.asset(
       'lib/assets/rive/circle.riv',
       fit: BoxFit.contain,
@@ -35,12 +36,46 @@ class _TicTacToeScreenState extends ConsumerState<TicTacToeScreen> {
   RiveAnimation grid = RiveAnimation.asset(
     'lib/assets/rive/grid.riv',
     fit: BoxFit.contain,
+    behavior: RiveHitTestBehavior.translucent,
+    onInit: _onGridInit,
+    stateMachines: ['Grid Machine', 'Win Machine'],
+    speedMultiplier: 2,
+  );
+
+  RiveAnimation turnIndicator = RiveAnimation.asset(
+    'lib/assets/rive/turn_indicator.riv',
+    fit: BoxFit.contain,
+    behavior: RiveHitTestBehavior.translucent,
+    onInit: _onTurnIndicatorInit,
+    speedMultiplier: 2,
   );
 
   List<Point?> board = List.filled(9, null);
   bool isX = true;
   String? winner;
+  bool xStarts = true;
   bool isEnded = false;
+
+  static late StateMachineController _gridController;
+  static late StateMachineController _turnIndicatorController;
+
+  static void _onGridInit(Artboard artboard) {
+    _gridController = StateMachineController.fromArtboard(
+      artboard,
+      'Win Machine',
+    )!;
+
+    artboard.addController(_gridController);
+  }
+
+  static void _onTurnIndicatorInit(Artboard artboard) {
+    _turnIndicatorController = StateMachineController.fromArtboard(
+      artboard,
+      'State Machine 1',
+    )!;
+
+    artboard.addController(_turnIndicatorController);
+  }
 
   void _handleTap(int index, WidgetRef ref) {
     if (isEnded || winner != null) {
@@ -55,16 +90,24 @@ class _TicTacToeScreenState extends ConsumerState<TicTacToeScreen> {
         isEnded = checkEndGame(board);
       });
 
+      _turnIndicatorController.getBoolInput('isX')!.value = isX;
+
       if (isEnded || winner != null) {
+        int id = getGridIdFromWinCombination(board);
+        _gridController.inputs.first.value = id.toDouble();
         ref.read(scoreProvider).incrementScore(winner);
       }
     }
   }
 
   void resetGame() {
+    _turnIndicatorController.getBoolInput('isX')!.value = !xStarts;
+    _gridController.inputs.first.value = 0.toDouble();
+
     setState(() {
       board = List.filled(9, null);
-      isX = true;
+      isX = !xStarts;
+      xStarts = !xStarts;
       winner = null;
       isEnded = false;
     });
@@ -95,7 +138,6 @@ class _TicTacToeScreenState extends ConsumerState<TicTacToeScreen> {
             width: 300,
             child: Stack(
               children: [
-                Positioned(child: grid),
                 GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
@@ -116,6 +158,7 @@ class _TicTacToeScreenState extends ConsumerState<TicTacToeScreen> {
                     );
                   },
                 ),
+                Positioned(child: grid),
               ],
             ),
           ),
@@ -123,6 +166,13 @@ class _TicTacToeScreenState extends ConsumerState<TicTacToeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(
+                  height: 50,
+                  child: Center(
+                    child: turnIndicator,
+                  ),
+                ),
+                const SizedBox(height: 16),
                 if (isEnded || winner != null)
                   Text(
                       winner != null
@@ -130,17 +180,16 @@ class _TicTacToeScreenState extends ConsumerState<TicTacToeScreen> {
                           : translate(context).ticTacToeDrawMessage,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             color: winner != null
-                                ? (winner == 'o'
+                                ? (winner == oPlayer
                                     ? GameColors.oColor
                                     : GameColors.xColor)
                                 : Colors.white,
                           )),
                 const SizedBox(height: 16),
-                if (isEnded || winner != null)
-                  ElevatedButton(
-                    onPressed: resetGame,
-                    child: Text(translate(context).ticTacToeResetButton),
-                  ),
+                ElevatedButton(
+                  onPressed: resetGame,
+                  child: Text(translate(context).ticTacToeResetButton),
+                ),
               ],
             ),
           )

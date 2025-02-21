@@ -15,7 +15,7 @@
       }
     }
   },
-  "ticTacToeWinnerMessage": "Winner is {winner}",
+  "ticTacToeWinnerMessage": "{winner} wins",
   "@ticTacToeWinnerMessage": {
     "description": "Message to display the winner of the game",
     "type": "text",
