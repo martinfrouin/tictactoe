@@ -130,6 +130,20 @@ class _TicTacToeScreenState extends ConsumerState<TicTacToeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Scoreboard(score: score),
+                const SizedBox(height: 16),
+                if (isEnded || winner != null)
+                  Text(
+                    winner != null
+                        ? translate(context).ticTacToeWinnerMessage(winner!)
+                        : translate(context).ticTacToeDrawMessage,
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                          color: winner != null
+                              ? (winner == oPlayer
+                                  ? GameColors.oColor
+                                  : GameColors.xColor)
+                              : Colors.white,
+                        ),
+                  ),
               ],
             ),
           ),
@@ -172,19 +186,6 @@ class _TicTacToeScreenState extends ConsumerState<TicTacToeScreen> {
                     child: turnIndicator,
                   ),
                 ),
-                const SizedBox(height: 16),
-                if (isEnded || winner != null)
-                  Text(
-                      winner != null
-                          ? translate(context).ticTacToeWinnerMessage(winner!)
-                          : translate(context).ticTacToeDrawMessage,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: winner != null
-                                ? (winner == oPlayer
-                                    ? GameColors.oColor
-                                    : GameColors.xColor)
-                                : Colors.white,
-                          )),
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: resetGame,
