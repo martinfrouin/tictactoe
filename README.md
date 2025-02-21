@@ -29,6 +29,4 @@ flutter test
 
 ## Known Improvements
 - The GHA are just building the Web app to avoid GHA free limitations.
-- Add of sound effects
 - Add end to end tests
-
