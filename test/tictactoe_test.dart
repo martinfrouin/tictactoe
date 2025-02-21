@@ -39,9 +39,11 @@ void main() {
 
     bool isEnded = checkEndGame(board);
     String? winner = checkWinner(board);
+    int gridId = getGridIdFromWinCombination(board);
 
     expect(isEnded, true);
     expect(winner, "×");
+    expect(gridId, 7);
   });
 
   test('Check end game and winner when some points are given', () {

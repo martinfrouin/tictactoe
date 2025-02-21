@@ -30,9 +30,9 @@
     "description": "Message to display the game is draw",
     "type": "text"
   },
-  "ticTacToeResetButton": "Reset",
+  "ticTacToeResetButton": "Restart",
   "@ticTacToeResetButton": {
-    "description": "Label for the reset button",
+    "description": "Label for the restart button",
     "type": "text"
   }
 }

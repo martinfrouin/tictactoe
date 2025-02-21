@@ -45,9 +45,8 @@ class _TicTacToeScreenState extends ConsumerState<TicTacToeScreen> {
   RiveAnimation turnIndicator = RiveAnimation.asset(
     'lib/assets/rive/turn_indicator.riv',
     fit: BoxFit.contain,
-    behavior: RiveHitTestBehavior.translucent,
     onInit: _onTurnIndicatorInit,
-    speedMultiplier: 2,
+    speedMultiplier: 3,
   );
 
   List<Point?> board = List.filled(9, null);
