@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tictactoe/constants/game.dart';
 import 'package:tictactoe/l10n/l10n.dart';
 import 'package:tictactoe/providers/score_provider.dart';
 import 'package:tictactoe/theme/colors.dart';
@@ -16,7 +17,7 @@ class Scoreboard extends StatelessWidget {
       children: [
         Column(
           children: [
-            Text("×",
+            Text(xPlayer,
                 style: Theme.of(context)
                     .textTheme
                     .displayMedium
@@ -30,7 +31,7 @@ class Scoreboard extends StatelessWidget {
         ),
         Column(
           children: [
-            Text('o',
+            Text(oPlayer,
                 style: Theme.of(context)
                     .textTheme
                     .displayMedium
